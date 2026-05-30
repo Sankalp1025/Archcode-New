@@ -1,0 +1,154 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  name      String
+  email     String   @unique
+  password  String
+
+  // Auth system upgrade
+  refreshToken String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Progress Tracking
+  solvedCount  Int      @default(0)
+  streak       Int      @default(0)
+  lastSolvedAt DateTime?
+
+  // Relations
+  submissions Submission[]
+  discussions Discussion[]
+}
+
+
+model Problem {
+  id          String   @id @default(uuid())
+  title       String
+  description String
+  difficulty  Difficulty
+  constraints String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  submissions Submission[]
+  tags        ProblemTag[]
+  discussions Discussion[]
+  companies   ProblemCompany[]
+}
+
+model Submission {
+  id          String   @id @default(uuid())
+  code        String   @db.Text
+  language    String
+  status      SubmissionStatus @default(PENDING)
+
+  result      Json?
+  error       String?
+
+  score              Int?
+  scalabilityScore   Int?
+  consistencyScore   Int?
+  clarityScore       Int?
+  aiFeedback         String?
+
+  executionTime Int?
+  memoryUsage   Int?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  userId    String
+  problemId String
+
+  user    User    @relation(fields: [userId], references: [id])
+  problem Problem @relation(fields: [problemId], references: [id])
+
+  @@index([userId, problemId])
+  @@index([status])
+}
+
+enum SubmissionStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  FAILED
+}
+
+model Tag {
+  id    String @id @default(uuid())
+  name  String @unique
+
+  problems ProblemTag[]
+}
+
+model ProblemTag {
+  id        String @id @default(uuid())
+
+  problemId String
+  tagId     String
+
+  problem Problem @relation(fields: [problemId], references: [id])
+  tag     Tag     @relation(fields: [tagId], references: [id])
+
+  @@unique([problemId, tagId])
+}
+
+model Company {
+  id    String @id @default(uuid())
+  name  String @unique
+
+  problems ProblemCompany[]
+}
+
+model ProblemCompany {
+  id        String @id @default(uuid())
+
+  problemId String
+  companyId String
+
+  problem Problem @relation(fields: [problemId], references: [id])
+  company Company @relation(fields: [companyId], references: [id])
+
+  @@unique([problemId, companyId])
+}
+
+model Discussion {
+  id        String   @id @default(uuid())
+  content   String
+  createdAt DateTime @default(now())
+
+  userId    String
+  problemId String
+
+  user    User    @relation(fields: [userId], references: [id])
+  problem Problem @relation(fields: [problemId], references: [id])
+}
+
+enum Difficulty {
+  EASY
+  MEDIUM
+  HARD
+}
+
+model FailedSubmission {
+  id            String   @id @default(uuid())
+  submissionId  String
+  error         String
+  payload       String
+  failedAt      DateTime
+  createdAt     DateTime @default(now())
+}

@@ -1,0 +1,35 @@
+import { Request, Response } from "express";
+import { sseManager } from "./sseManager";
+
+export const streamSubmissionUpdates = (
+  req: Request,
+  res: Response
+) => {
+  const  submissionId  = req.params.submissionId as string;
+
+  res.setHeader("Content-Type", "text/event-stream");
+  res.setHeader("Cache-Control", "no-cache");
+  res.setHeader("Connection", "keep-alive");
+
+  res.setHeader(
+    "Access-Control-Allow-Origin",
+    "http://localhost:3000"
+);
+
+  res.setHeader(
+    "Access-Control-Allow-Credentials",
+    "true"
+);
+
+  res.flushHeaders();
+
+  sseManager.addClient(submissionId, res);
+
+  console.log(`Client connected for submission ${submissionId}`);
+
+  req.on("close", () => {
+    sseManager.removeClient(submissionId, res);
+
+    console.log(`Client disconnected for submission ${submissionId}`);
+  });
+};
