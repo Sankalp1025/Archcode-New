@@ -59,7 +59,6 @@ export const submissionWorker = new Worker(
         submissionId,
         RealtimeSubmissionStatus.PROCESSING
       );
-
         
       // REALTIME: AI_EVALUATING
       emitSubmissionUpdate(
@@ -91,7 +90,7 @@ export const submissionWorker = new Worker(
           score: result.score,
           aiFeedback: result.feedback,
         },
-      });
+      });  
 
       // REALTIME: COMPLETED
       emitSubmissionUpdate(
@@ -100,6 +99,9 @@ export const submissionWorker = new Worker(
         {
           score: result.score,
           feedback: result.feedback,
+          strengths: result.strengths,
+          weaknesses: result.weaknesses,
+          recommendations: result.recommendations,
         }
       );
 

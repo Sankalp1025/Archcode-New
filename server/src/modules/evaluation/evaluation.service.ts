@@ -7,6 +7,7 @@ import { ParserService, ParsedResult } from "./parser.service";
 type AiResultNormalized = {
   strengths: string[];
   weaknesses: string[];
+  recommendations: string[];
   feedback: string;
 };
 
@@ -39,8 +40,11 @@ export class EvaluationService {
       const finalFeedback = this.feedback.generate(ruleResult, safeAiResult);
 
       return {
-        score: finalScore,
-        feedback: finalFeedback,
+        score:aiResult ? aiResult.score : finalScore,
+        feedback: aiResult ? aiResult.feedback : finalFeedback,
+        strengths: safeAiResult.strengths,
+        weaknesses: safeAiResult.weaknesses,
+        recommendations: aiResult ? aiResult.recommendations || [] : [],
       };
 
     } catch (error) {
@@ -49,6 +53,9 @@ export class EvaluationService {
       return {
         score: 0,
         feedback: "Evaluation failed. Please try again.",
+        strengths: [],
+        weaknesses: [],
+        recommendations: [],
       };
     }
   }
@@ -58,14 +65,16 @@ export class EvaluationService {
       return {
         strengths: [],
         weaknesses: [],
-        feedback: "AI unavailable",
+        recommendations: [],
+        feedback: "AI unavailable", 
       };
     }
 
     return {
-      strengths: [],
-      weaknesses: [],
-      feedback: aiResult.feedback || "",
+     strengths: aiResult.strengths || [],
+     weaknesses: aiResult.weaknesses || [],
+     recommendations: aiResult.recommendations || [],
+     feedback: aiResult.feedback || "",
     };
   }
 }

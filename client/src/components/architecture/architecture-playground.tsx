@@ -36,7 +36,7 @@ export default function ArchitecturePlayground() {
 
   const [submissionId, setSubmissionId] = useState(""); 
 
-  const { status }  = useSubmissionStream(submissionId);
+  const { status, score, feedback, strengths, weaknesses, recommendations }  = useSubmissionStream(submissionId);
 
   const [evaluationStatus, setEvaluationStatus] = useState("");
 
@@ -625,12 +625,17 @@ useEffect(() => {
 
         </div>
 
-          <AIAnalysisPanel analysis={analysis} evaluationStatus={evaluationStatus} />
-
-        </div>
-
-      </div>
-
-    </section>
+          <AIAnalysisPanel
+            analysis={analysis}
+            evaluationStatus={evaluationStatus}
+            score={score}
+            feedback={feedback}
+            strengths={strengths}
+            weaknesses={weaknesses}
+            recommendations={recommendations}
+          />
+              </div>
+          </div>
+      </section>
   );
 }

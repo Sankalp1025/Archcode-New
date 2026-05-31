@@ -1,7 +1,10 @@
-import axios from "axios";
+import { evaluateArchitectureWithGemini } from "../../ai/gemini-evaluator";
 
 export type EvaluationResult = {
   score: number;
+  strengths: string[];
+  weaknesses: string[];
+  recommendations: string[];
   feedback: string;
 };
 
@@ -11,7 +14,10 @@ function safeParseAIResponse(text: string): EvaluationResult {
 
     if (
       typeof parsed.score === "number" &&
-      typeof parsed.feedback === "string"
+      typeof parsed.feedback === "string" &&
+      Array.isArray(parsed.strengths) &&
+      Array.isArray(parsed.weaknesses) &&
+      Array.isArray(parsed.recommendations)
     ) {
       return parsed;
     }
@@ -23,6 +29,9 @@ function safeParseAIResponse(text: string): EvaluationResult {
     return {
       score: 50,
       feedback: "Invalid AI response format. Default evaluation applied.",
+      strengths: [],
+      weaknesses: [],
+      recommendations: []
     };
   }
 }
@@ -46,37 +55,24 @@ Format:
 Answer:
 ${answer}
 `;
-      console.log("AI URL:", process.env.AI_API_URL);                      // For Debugging.
-      const response = await axios.post(
-        process.env.AI_API_URL as string,
-        {
-          prompt,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${process.env.AI_API_KEY}`,
-          },
-        }
-      );
+      const aiText = await evaluateArchitectureWithGemini(
+       "System Design Problem",
+       "Evaluate architecture submission",
+       answer
+    );
 
-      const aiText =
-        response.data?.choices?.[0]?.message?.content ||
-        response.data?.response ||
-        "";
+    const parsed = safeParseAIResponse(aiText);
 
-      if (!aiText) {
-        throw new Error("Empty AI response");
-      }
-
-      const parsed = safeParseAIResponse(aiText);
-
-      return parsed;
+return parsed;
     } catch (error) {
       console.error("AI evaluation failed:", error);
 
       return {
         score: 50,
         feedback: "AI evaluation failed. Please try again later.",
+        strengths: [],
+        weaknesses: [],
+        recommendations: []
       };
     }
   }

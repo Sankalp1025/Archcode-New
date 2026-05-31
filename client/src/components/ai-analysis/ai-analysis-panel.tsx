@@ -1,16 +1,25 @@
 import {BrainCircuit, ShieldAlert, Sparkles, TrendingUp,} from "lucide-react";
 import { motion } from "framer-motion";
 import { PatternResult } from "../../lib/pattern-engine/types";
-// import { AnalysisResult } from "../../lib/analysis/architecture-rules";
 
 interface AIAnalysisPanelProps {
    analysis: PatternResult;
    evaluationStatus: string;
-}
+   score: number | null;
+   feedback: string;
+
+   strengths: string[];
+   weaknesses: string[];
+   recommendations: string[];
+  }
 
 export function AIAnalysisPanel({
-  analysis,
   evaluationStatus,
+  score,
+  feedback,
+  strengths,
+  weaknesses,
+  recommendations,
 }: AIAnalysisPanelProps) {
   return (
     <div className="flex h-[820px] w-[380px] flex-col overflow-y-auto border-l border-zinc-800 bg-[#0B0B0F]">
@@ -50,7 +59,7 @@ export function AIAnalysisPanel({
               </p>
 
               <h1 className="mt-1 text-4xl font-bold text-white">
-                {analysis.score}
+                {score}
                 <span className="text-xl text-zinc-400">
                  /100
                 </span>
@@ -75,7 +84,7 @@ export function AIAnalysisPanel({
         </div>
 
         <p className="text-sm leading-relaxed text-zinc-300">
-          {analysis.summary}
+          {feedback}
         </p>
       </div>
 
@@ -90,7 +99,7 @@ export function AIAnalysisPanel({
         </div>
 
         <div className="space-y-3">
-          {analysis.strengths?.map((strength: string) => (
+          {strengths?.map((strength: string) => (
             <div
               key={strength}
               className="rounded-xl border border-emerald-500/20 bg-emerald-500/10 p-3 text-sm text-emerald-200"
@@ -108,7 +117,7 @@ export function AIAnalysisPanel({
         </h3>
 
         <div className="space-y-3">
-          {analysis.suggestions?.map(
+          {recommendations?.map(
             (suggestion: string, index: number) => (
               <motion.div
                 key={suggestion}
@@ -143,12 +152,12 @@ export function AIAnalysisPanel({
            </h3>
 
            <span className="rounded-full bg-red-500/10 px-3 py-1 text-xs text-red-300">
-            {analysis.issues?.length} Problems
+            {weaknesses?.length} Problems
            </span>
         </div>
 
         <div className="space-y-4">
-          {analysis.issues?.map((issue: string, index: number) => (
+          {weaknesses?.map((issue: string, index: number) => (
             <div
               key={index}
               className="
