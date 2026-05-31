@@ -1,6 +1,7 @@
 export function buildArchitecturePrompt(
   problemTitle: string,
-  architectureDescription: string
+  architectureDescription: string,
+  architectureJson: string
 ): string {
   return `
 You are a senior system design interviewer.
@@ -10,6 +11,9 @@ ${problemTitle}
 
 Candidate Architecture:
 ${architectureDescription}
+
+Architecture JSON:
+${architectureJson}
 
 Evaluate the architecture.
 
