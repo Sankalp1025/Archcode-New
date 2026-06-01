@@ -1,4 +1,4 @@
-import {BrainCircuit, ShieldAlert, Sparkles, TrendingUp,} from "lucide-react";
+import { BrainCircuit, ShieldAlert, Sparkles, TrendingUp, } from "lucide-react";
 import { motion } from "framer-motion";
 import { PatternResult } from "../../lib/pattern-engine/types";
 
