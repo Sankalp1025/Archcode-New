@@ -19,7 +19,8 @@ export class EvaluationService {
   private feedback = new FeedbackService();
   private parser = new ParserService();
   private patternDetection = new PatternDetectionService();
-  async evaluate(submission: { answer: string }) {
+
+  async evaluate(submission: { answer: string; }) {
     try {
       const parsed: ParsedResult = await this.parser.parse(submission.answer);
 
@@ -28,7 +29,7 @@ export class EvaluationService {
         const architecture = JSON.parse(submission.answer);
 
          detectedPatterns = this.patternDetection.detect(architecture.nodes || [], architecture.edges || []);
-         
+
          } catch {
           detectedPatterns = [];
          }

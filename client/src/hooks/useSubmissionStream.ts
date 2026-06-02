@@ -11,6 +11,7 @@ export const useSubmissionStream = (
   const [strengths, setStrengths] = useState<string[]>([]);
   const [weaknesses, setWeaknesses] = useState<string[]>([]);
   const [recommendations, setRecommendations] = useState<string[]>([]);
+  const [detectedPatterns, setDetectedPatterns] = useState<string[]>([]);
 
   useEffect(() => {
     if (!submissionId) return;
@@ -38,7 +39,10 @@ export const useSubmissionStream = (
     if (data.recommendations !== undefined) {
       setRecommendations(data.recommendations);
     }
-
+    if (data.detectedPatterns !== undefined) {
+      setDetectedPatterns(data.detectedPatterns);
+    }
+    
    setStatus(data.status);
 
    if (typeof data.score === "number") {
@@ -66,6 +70,7 @@ export const useSubmissionStream = (
            feedback,
            strengths,
            weaknesses,
-           recommendations 
+           recommendations,
+           detectedPatterns
         };
 };

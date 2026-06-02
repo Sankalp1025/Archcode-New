@@ -11,6 +11,7 @@ interface AIAnalysisPanelProps {
    strengths: string[];
    weaknesses: string[];
    recommendations: string[];
+   detectedPatterns: string[];
   }
 
 export function AIAnalysisPanel({
@@ -20,6 +21,7 @@ export function AIAnalysisPanel({
   strengths,
   weaknesses,
   recommendations,
+  detectedPatterns,
 }: AIAnalysisPanelProps) {
   return (
     <div className="flex h-[820px] w-[380px] flex-col overflow-y-auto border-l border-zinc-800 bg-[#0B0B0F]">
@@ -109,6 +111,30 @@ export function AIAnalysisPanel({
            ))}
          </div>
       </div>
+
+      {/* Detected Patterns */}
+      <div className="rounded-xl border border-zinc-800 p-4">
+        <h3 className="mb-3 text-base font-semibold text-white">
+          Detected Architecture Patterns
+        </h3>
+
+  <div className="space-y-2">
+    {detectedPatterns?.length > 0 ? (
+      detectedPatterns.map((pattern: string) => (
+        <div
+          key={pattern}
+          className="rounded-lg bg-violet-500/10 border border-violet-500/20 px-3 py-2 text-sm text-violet-300"
+        >
+          {pattern}
+        </div>
+      ))
+    ) : (
+      <div className="text-sm text-zinc-400">
+        No patterns detected yet
+      </div>
+    )}
+  </div>
+</div>
 
       {/* Suggestions */}
       <div className="border-b border-zinc-800 p-5">
