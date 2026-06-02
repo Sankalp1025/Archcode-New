@@ -22,7 +22,11 @@ export const signup = async (
       },
     });
 
-    return user;
+    return {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+    };
 
   } catch (error: any) {
 
@@ -36,11 +40,11 @@ export const signup = async (
 export const login = async (email: string, password: string) => {
   const user = await prisma.user.findUnique({ where: { email } });
 
-  if (!user) throw new Error("User not found");
+  if (!user) throw new Error("Invalid email or password");
 
   const isMatch = await comparePassword(password, user.password);
 
-    if (!isMatch) throw new Error("Invalid email or password");
+  if (!isMatch) throw new Error("Invalid email or password");
 
   const accessToken = generateAccessToken(user.id);
   const refreshToken = generateRefreshToken(user.id);
@@ -50,5 +54,13 @@ export const login = async (email: string, password: string) => {
     data: { refreshToken },
     });
 
-  return { accessToken, refreshToken };
+  return {
+  user: {
+    id: user.id,
+    name: user.name,
+    email: user.email,
+  },
+  accessToken,
+  refreshToken,
+};
 };
