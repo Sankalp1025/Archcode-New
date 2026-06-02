@@ -1,4 +1,3 @@
-import { data } from "framer-motion/m";
 import { useEffect, useState } from "react";
 
 export const useSubmissionStream = (
@@ -12,6 +11,7 @@ export const useSubmissionStream = (
   const [weaknesses, setWeaknesses] = useState<string[]>([]);
   const [recommendations, setRecommendations] = useState<string[]>([]);
   const [detectedPatterns, setDetectedPatterns] = useState<string[]>([]);
+  const [lintIssues, setLintIssues] = useState<any[]>([]);
 
   useEffect(() => {
     if (!submissionId) return;
@@ -42,7 +42,10 @@ export const useSubmissionStream = (
     if (data.detectedPatterns !== undefined) {
       setDetectedPatterns(data.detectedPatterns);
     }
-    
+    if (data.lintIssues !== undefined) {
+      setLintIssues(data.lintIssues);
+    }
+
    setStatus(data.status);
 
    if (typeof data.score === "number") {
@@ -66,11 +69,12 @@ export const useSubmissionStream = (
   }, [submissionId]);
 
   return{ status,
-           score,
-           feedback,
-           strengths,
-           weaknesses,
-           recommendations,
-           detectedPatterns
+          score,
+          feedback,
+          strengths,
+          weaknesses,
+          recommendations,
+          detectedPatterns,
+          lintIssues
         };
 };

@@ -4,7 +4,6 @@ import { prisma } from "../config/db";
 import { EvaluationService } from "../modules/evaluation/evaluation.service";
 import { SubmissionStatus } from "@prisma/client";
 import { dlqQueue } from "../queues/dlq.queue";
-//import { PatternDetectionService } from "../modules/evaluation/patternDetection.service";
 
 import {
   emitSubmissionUpdate,
@@ -12,9 +11,6 @@ import {
 } from "../realtime/submissionEvents";
 
 const evaluationService = new EvaluationService();
-//const patternDetectionService = new PatternDetectionService();
-
-
 
 export const submissionWorker = new Worker(
   "submission-queue",
@@ -107,6 +103,7 @@ export const submissionWorker = new Worker(
           weaknesses: result.weaknesses,
           recommendations: result.recommendations,
           detectedPatterns: result.detectedPatterns,
+          lintIssues: result.lintIssues,
         }
       );
 

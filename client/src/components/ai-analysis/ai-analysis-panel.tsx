@@ -12,6 +12,7 @@ interface AIAnalysisPanelProps {
    weaknesses: string[];
    recommendations: string[];
    detectedPatterns: string[];
+   lintIssues: string[];
   }
 
 export function AIAnalysisPanel({
@@ -22,6 +23,7 @@ export function AIAnalysisPanel({
   weaknesses,
   recommendations,
   detectedPatterns,
+  lintIssues
 }: AIAnalysisPanelProps) {
   return (
     <div className="flex h-[820px] w-[380px] flex-col overflow-y-auto border-l border-zinc-800 bg-[#0B0B0F]">
@@ -118,23 +120,64 @@ export function AIAnalysisPanel({
           Detected Architecture Patterns
         </h3>
 
-  <div className="space-y-2">
-    {detectedPatterns?.length > 0 ? (
-      detectedPatterns.map((pattern: string) => (
-        <div
-          key={pattern}
-          className="rounded-lg bg-violet-500/10 border border-violet-500/20 px-3 py-2 text-sm text-violet-300"
-        >
-          {pattern}
-        </div>
-      ))
-    ) : (
-      <div className="text-sm text-zinc-400">
-        No patterns detected yet
-      </div>
-    )}
-  </div>
-</div>
+         <div className="space-y-2">
+           {detectedPatterns?.length > 0 ? (
+             detectedPatterns.map((pattern: string) => (
+               <div
+                 key={pattern}
+                 className="rounded-lg bg-violet-500/10 border border-violet-500/20 px-3 py-2 text-sm text-violet-300"
+                >
+                 {pattern}
+               </div>
+             ))
+           ) : (
+             <div className="text-sm text-zinc-400">
+               No patterns detected yet
+             </div>
+           )}
+         </div>
+       </div>
+       
+       {/* Architecture Issues */}
+       <div className="rounded-xl border border-zinc-800 p-4">
+         <h3 className="mb-3 text-base font-semibold text-white">
+           Architecture Issues
+         </h3>
+
+         <div className="space-y-3">
+           {lintIssues?.length > 0 ? (
+             lintIssues.map((issue: any) => (
+               <div
+                 key={issue.ruleId}
+                 className="rounded-lg border border-red-500/20 bg-red-500/10 p-3"
+               >
+                 <div className="flex items-center justify-between">
+                   <span className="font-medium text-red-300">
+                    {issue.title}
+                   </span>
+
+                   <span className="text-xs text-red-400">
+                     {issue.severity}
+                   </span>
+                 </div>
+
+                 <p className="mt-2 text-sm text-zinc-300">
+                   {issue.description}
+                 </p>
+
+                 <p className="mt-2 text-sm text-zinc-400">
+                   Recommendation: {issue.recommendation}
+                 </p>
+               </div>
+             ))
+           ) : (
+             <div className="text-sm text-zinc-400">
+               No architecture issues detected
+             </div>
+           )}
+         </div>
+       </div>
+       
 
       {/* Suggestions */}
       <div className="border-b border-zinc-800 p-5">

@@ -36,7 +36,7 @@ export default function ArchitecturePlayground() {
 
   const [submissionId, setSubmissionId] = useState(""); 
 
-  const { status, score, feedback, strengths, weaknesses, recommendations, detectedPatterns }  = useSubmissionStream(submissionId);
+  const { status, score, feedback, strengths, weaknesses, recommendations, detectedPatterns, lintIssues }  = useSubmissionStream(submissionId);
 
   const [evaluationStatus, setEvaluationStatus] = useState("");
 
@@ -634,6 +634,7 @@ useEffect(() => {
             weaknesses={weaknesses}
             recommendations={recommendations}
             detectedPatterns={detectedPatterns}
+            lintIssues={lintIssues}
           />
               </div>
           </div>

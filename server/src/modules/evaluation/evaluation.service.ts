@@ -4,6 +4,8 @@ import { ScoringService } from "./scoring.service";
 import { FeedbackService } from "./feedback.service";
 import { ParserService, ParsedResult } from "./parser.service";
 import { PatternDetectionService } from "./patternDetection.service";
+import { ArchitectureLinterService } from "./architecture-linter.service";
+import { LintIssue } from "./lint-types";
 
 type AiResultNormalized = {
   strengths: string[];
@@ -19,20 +21,31 @@ export class EvaluationService {
   private feedback = new FeedbackService();
   private parser = new ParserService();
   private patternDetection = new PatternDetectionService();
+  private architectureLinter = new ArchitectureLinterService();
 
   async evaluate(submission: { answer: string; }) {
     try {
       const parsed: ParsedResult = await this.parser.parse(submission.answer);
 
      let detectedPatterns: string[] = [];
+     let lintIssues: LintIssue[] = [];
+
       try {
-        const architecture = JSON.parse(submission.answer);
+       const architecture = JSON.parse(submission.answer);
 
-         detectedPatterns = this.patternDetection.detect(architecture.nodes || [], architecture.edges || []);
+        detectedPatterns = this.patternDetection.detect(
+         architecture.nodes || [],
+         architecture.edges || []
+        );
 
-         } catch {
-          detectedPatterns = [];
-         }
+      lintIssues = this.architectureLinter.lint(
+       architecture.nodes || [],
+       architecture.edges || []
+      );
+    } catch {
+     detectedPatterns = [];
+     lintIssues = [];
+    }
 
       const ruleResult = await this.ruleEngine.evaluate(parsed);
 
@@ -58,6 +71,7 @@ export class EvaluationService {
         weaknesses: safeAiResult.weaknesses,
         recommendations: aiResult ? aiResult.recommendations || [] : [],
         detectedPatterns,
+        lintIssues,
       };
 
     } catch (error) {
@@ -69,6 +83,8 @@ export class EvaluationService {
         strengths: [],
         weaknesses: [],
         recommendations: [],
+        detectedPatterns: [],
+        lintIssues: [],
       };
     }
   }
