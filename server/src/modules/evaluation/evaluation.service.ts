@@ -67,9 +67,9 @@ export class EvaluationService {
       return {
         score:aiResult ? aiResult.score : finalScore,
         feedback: aiResult ? aiResult.feedback : finalFeedback,
-        strengths: safeAiResult.strengths,
-        weaknesses: safeAiResult.weaknesses,
-        recommendations: aiResult ? aiResult.recommendations || [] : [],
+        strengths: aiResult ? safeAiResult.strengths : ruleResult.strengths,
+        weaknesses: aiResult ? safeAiResult.weaknesses : ruleResult.weaknesses,
+        recommendations: aiResult ? aiResult.recommendations || []: ruleResult.recommendations,
         detectedPatterns,
         lintIssues,
       };

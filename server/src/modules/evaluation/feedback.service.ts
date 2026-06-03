@@ -1,5 +1,8 @@
 type RuleResult = {
-  issues: string[];
+  score: number;
+  strengths: string[];
+  weaknesses: string[];
+  recommendations: string[];
 };
 
 type AiResult = {
@@ -20,10 +23,10 @@ export class FeedbackService {
       output += "\n";
     }
 
-    if (ruleResult.issues?.length) {
-      output += "Issues:\n";
-      for (const issue of ruleResult.issues) {
-        output += `- ${issue}\n`;
+    if (ruleResult.weaknesses?.length) {
+      output += "Weaknesses:\n";
+      for (const w of ruleResult.weaknesses) {
+        output += `- ${w}\n`;
       }
       output += "\n";
     }

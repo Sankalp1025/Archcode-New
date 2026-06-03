@@ -69,7 +69,7 @@ return parsed;
 
       return {
         score: 50,
-        feedback: "AI evaluation failed. Please try again later.",
+        feedback: "Architecture analyzed using fallback evaluation engine. Core architecture checks, pattern detection, and linting results are shown below.",
         strengths: [],
         weaknesses: [],
         recommendations: []

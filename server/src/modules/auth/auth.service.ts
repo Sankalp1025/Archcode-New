@@ -1,9 +1,6 @@
 import { prisma } from "../../config/db";
 import { hashPassword, comparePassword } from "../../utils/hash";
-import {
-  generateAccessToken,
-  generateRefreshToken,
-} from "../../utils/jwt";
+import { generateAccessToken, generateRefreshToken } from "../../utils/jwt";
 
 export const signup = async (
   name: string,

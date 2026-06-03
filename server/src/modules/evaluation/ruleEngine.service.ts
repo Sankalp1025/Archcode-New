@@ -2,13 +2,17 @@ import { ParsedResult } from "./parser.service";
 
 type RuleResult = {
   score: number;
-  issues: string[];
+  strengths: string[];
+  weaknesses: string[];
+  recommendations: string[];
 };
 
 export class RuleEngineService {
   async evaluate(parsed: ParsedResult): Promise<RuleResult> {
     let score = 100;
-    const issues: string[] = [];
+    const strengths: string[] = [];
+    const weaknesses: string[] = [];
+    const recommendations: string[] = [];
 
     const components = parsed.components;
 
@@ -17,18 +21,18 @@ export class RuleEngineService {
     for (const comp of required) {
       if (!components.includes(comp)) {
         score -= 20;
-        issues.push(`Missing required component: ${comp}`);
+        weaknesses.push(`Missing required component: ${comp}`);
       }
     }
 
     if (!components.includes("cache")) {
       score -= 10;
-      issues.push("No caching strategy mentioned");
+      weaknesses.push("No caching strategy mentioned");
     }
 
     if (!components.includes("queue")) {
       score -= 10;
-      issues.push("No async processing / queue mentioned");
+      weaknesses.push("No async processing / queue mentioned");
     }
 
     if (components.includes("cdn")) {
@@ -43,7 +47,9 @@ export class RuleEngineService {
 
     return {
       score,
-      issues,
+      strengths,
+      weaknesses,
+      recommendations,
     };
   }
 }

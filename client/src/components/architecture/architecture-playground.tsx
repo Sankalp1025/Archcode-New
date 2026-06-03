@@ -304,6 +304,7 @@ useEffect(() => {
         {/* Playground */}
         <div
           className="
+            relative
             flex
             h-[820px]
             overflow-hidden
@@ -619,6 +620,21 @@ useEffect(() => {
 
             <Controls/>
 
+            <div
+               className="
+                absolute
+                bottom-4
+                left-1/2
+                -translate-x-1/2
+                text-xs
+                text-slate-500
+                pointer-events-none
+                select-none
+              "
+              >
+               Drag nodes to reposition. Select a node and press Delete to remove it.
+            </div>
+
           </ReactFlow>
 
          </div> 
@@ -637,7 +653,7 @@ useEffect(() => {
             lintIssues={lintIssues}
           />
               </div>
-          </div>
-      </section>
+        </div>
+    </section>
   );
 }
