@@ -1,10 +1,11 @@
+import { Edge, Node } from "@xyflow/react";
 import { rules } from "./rules";
 import { analyzeTopology } from "./topology";
-import { PatternResult, RuleResult} from "./types";
+import { RuleResult } from "./types";
 
 export const runPatternEngine = (
-  nodes: any[],
-  edges: any[]
+  nodes: Node[],
+  edges: Edge[]
 ) => {
 
     if (nodes.length === 0) {
@@ -75,14 +76,12 @@ suggestions.push(
 
   return {
    score,
-
    summary:
     issues.length === 0
       ? "Architecture looks scalable and well-structured."
       : `Detected ${issues.length} architectural issue(s) requiring attention.`,
-
-   strengths,
-   suggestions,
-   issues,
-};
+    strengths,
+    suggestions,
+    issues,
+  };
 };

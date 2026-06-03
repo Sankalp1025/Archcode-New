@@ -3,12 +3,8 @@ import * as submissionService from "./submission.service";
 
 
 export const createSubmission = async (req: Request, res: Response) => {
-  console.log("HEADERS:", req.headers);
-  console.log("BODY:", req.body);
 
   try {
-    
-    console.log("Incoming submission:", req.body);
 
     if (!req.body || !req.body.code) {
       return res.status(400).json({ error: "Code is required" });
@@ -19,6 +15,7 @@ export const createSubmission = async (req: Request, res: Response) => {
     return res.status(201).json(result);
 
   } catch (err: any) {
+
     console.error("CONTROLLER ERROR:", err);
 
     return res.status(500).json({
@@ -43,6 +40,7 @@ export const getSubmissionById = async (req: Request, res: Response) => {
     }
 
     return res.json(submission);
+    
   } catch (err: any) {
     return res.status(500).json({ error: err.message });
   }

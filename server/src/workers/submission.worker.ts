@@ -16,10 +16,6 @@ export const submissionWorker = new Worker(
   "submission-queue",
   async (job: Job) => {
     const { submissionId } = job.data;
-
-    console.log(`Processing submission: ${submissionId}`);
-    console.log(`Attempt: ${job.attemptsMade + 1}`);
-
     
     // REALTIME: QUEUED
     emitSubmissionUpdate(
@@ -54,30 +50,25 @@ export const submissionWorker = new Worker(
         },
       });
 
-      // REALTIME: PROCESSING
       emitSubmissionUpdate(
         submissionId,
         RealtimeSubmissionStatus.PROCESSING
       );
         
-      // REALTIME: AI_EVALUATING
       emitSubmissionUpdate(
         submissionId,
         RealtimeSubmissionStatus.AI_EVALUATING
       );
-      
-      // AI EVALUATION
+     
       const result = await evaluationService.evaluate({
         answer: submission.code,
       });
 
-      // REALTIME: ANALYZING
       emitSubmissionUpdate(
         submissionId,
         RealtimeSubmissionStatus.ANALYZING
       );
 
-      // Validate evaluation result
       if (!result || typeof result.score !== "number") {
         throw new Error("Invalid evaluation result");
       }
@@ -107,7 +98,6 @@ export const submissionWorker = new Worker(
         }
       );
 
-      console.log("Job completed successfully");
     } catch (error: any) {
       console.error(
         `Worker failed on attempt ${job.attemptsMade + 1}:`,
@@ -158,7 +148,6 @@ submissionWorker.on(
     const maxAttempts = job.opts.attempts ?? 3;
 
     if (attemptsMade >= maxAttempts) {
-      console.log("Moving job to DLQ...");
 
       await dlqQueue.add("failed-submission", {
         originalJobId: job.id,

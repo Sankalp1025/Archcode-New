@@ -11,7 +11,7 @@ export const rules: PatternRule[] = [
 
       return nodes.some(
         (node) =>
-         node.data?.label?.toLowerCase().includes("cdn")
+         (node.data?.label as string).toLowerCase().includes("cdn")
       );
     },
 
@@ -40,7 +40,7 @@ export const rules: PatternRule[] = [
 
       return nodes.some(
         (node) =>
-         node.data?.label?.toLowerCase().includes("redis")
+         (node.data?.label as string).toLowerCase().includes("redis")
       );
     },
 
@@ -68,7 +68,7 @@ export const rules: PatternRule[] = [
 
       return nodes.some(
         (node) =>
-         node.data?.label?.toLowerCase().includes("worker")
+         (node.data?.label as string).toLowerCase().includes("worker")
       );
     },
 
@@ -96,12 +96,12 @@ export const rules: PatternRule[] = [
 
       const hasDatabase = nodes.some(
         (node) =>
-         node.data?.label?.toLowerCase().includes("database")
+         (node.data?.label as string).toLowerCase().includes("database")
       );
 
       const hasCache = nodes.some(
         (node) =>
-         node.data?.label?.toLowerCase().includes("cache")
+         (node.data?.label as string).toLowerCase().includes("cache")
       );
       return hasDatabase && !hasCache;
     },
@@ -132,7 +132,7 @@ export const rules: PatternRule[] = [
 
       const hasGateway = nodes.some(
         (node) =>
-         node.data?.label?.toLowerCase().includes("gateway")
+         (node.data?.label as string).toLowerCase().includes("gateway")
       );
       return (!hasGateway && nodes.length >= 3);
     },

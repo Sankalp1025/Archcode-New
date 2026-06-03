@@ -1,3 +1,5 @@
+import { Edge, Node } from "@xyflow/react";
+
 export interface RuleResult {
 
     scoreDelta: number;
@@ -22,12 +24,12 @@ export interface PatternRule {
   name: string;
 
   check: (
-    nodes: any[],
-    edges: any[]
+    nodes: Node[],
+    edges: Edge[]
    ) => boolean;
 
   analyze: (
-    nodes: any[],
-    edges: any[]
+    nodes: Node[],
+    edges: Edge[]
    ) => RuleResult;
 }

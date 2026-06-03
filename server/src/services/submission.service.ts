@@ -5,7 +5,6 @@ const prisma = new PrismaClient();
 
 export const handleSubmission = async (data: any) => {
   try {
-    console.log("Incoming submission:", data);
 
     const submission = await prisma.submission.create({
       data: {
@@ -17,11 +16,7 @@ export const handleSubmission = async (data: any) => {
       },
     });
 
-    console.log("Created:", submission.id);
-
     await addSubmissionJob(submission.id);
-
-    console.log("Job added to queue");
 
     return {
       submissionId: submission.id,

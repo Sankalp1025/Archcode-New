@@ -2,7 +2,6 @@ import prisma from "../config/prisma";
 import { SubmissionStatus } from "@prisma/client";
 
 export const create = async (data: any) => {
-  console.log("REPO DATA:", data);
 
   const user = await prisma.user.upsert({
     where: { id: data.userId || "temp-user" },

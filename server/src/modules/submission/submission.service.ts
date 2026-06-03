@@ -9,8 +9,6 @@ type SubmissionInput = {
 
 export const handleSubmission = async (data: SubmissionInput) => {
   try {
-    console.log("SERVICE DATA:", data);
-
     const submission = await submissionRepo.create(data);
 
     await addSubmissionJob(submission.id);
@@ -19,6 +17,7 @@ export const handleSubmission = async (data: SubmissionInput) => {
       submissionId: submission.id,
       status: submission.status,
     };
+    
   } catch (error) {
     console.error("SERVICE ERROR:", error);
     throw error;

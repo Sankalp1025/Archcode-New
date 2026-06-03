@@ -1,9 +1,5 @@
 import express from "express";
-import {
-  createProblem,
-  getAllProblems,
-  getProblemById,
-} from "../controllers/problem.controller";
+import { createProblem, getAllProblems, getProblemById } from "../controllers/problem.controller";
 
 const router = express.Router();
 

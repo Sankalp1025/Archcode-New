@@ -1,6 +1,8 @@
+import { Edge, Node } from "@xyflow/react";
+
 export const analyzeTopology = (
-  nodes: any[],
-  edges: any[]
+  nodes: Node[],
+  edges: Edge[]
 ) => {
 
   let scoreDelta = 0;
@@ -41,7 +43,6 @@ export const analyzeTopology = (
   }
 
   // Cache without connections
-
   const cacheNodes = nodes.filter(
     (node) =>
      node.data?.variant === "Cache"

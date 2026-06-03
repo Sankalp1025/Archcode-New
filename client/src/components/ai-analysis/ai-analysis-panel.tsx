@@ -2,6 +2,15 @@ import { BrainCircuit, ShieldAlert, Sparkles, TrendingUp, } from "lucide-react";
 import { motion } from "framer-motion";
 import { PatternResult } from "../../lib/pattern-engine/types";
 
+type LintIssue = {
+   ruleId: any;
+   title: any;
+   description: string;
+   recommendation: string;
+   severity: string;
+  };
+
+
 interface AIAnalysisPanelProps {
    analysis: PatternResult;
    evaluationStatus: string;
@@ -12,7 +21,7 @@ interface AIAnalysisPanelProps {
    weaknesses: string[];
    recommendations: string[];
    detectedPatterns: string[];
-   lintIssues: string[];
+   lintIssues: LintIssue[];
   }
 
 export function AIAnalysisPanel({
@@ -25,8 +34,10 @@ export function AIAnalysisPanel({
   detectedPatterns,
   lintIssues
 }: AIAnalysisPanelProps) {
+   
   return (
     <div className="flex h-[820px] w-[380px] flex-col overflow-y-auto border-l border-zinc-800 bg-[#0B0B0F]">
+      
       {/* Header */}
       <div className="border-b border-zinc-800 p-5">
         <div className="mb-3 flex items-start gap-3">
@@ -146,7 +157,7 @@ export function AIAnalysisPanel({
 
          <div className="space-y-3">
            {lintIssues?.length > 0 ? (
-             lintIssues.map((issue: any) => (
+             lintIssues.map((issue: LintIssue) => (
                <div
                  key={issue.ruleId}
                  className="rounded-lg border border-red-500/20 bg-red-500/10 p-3"

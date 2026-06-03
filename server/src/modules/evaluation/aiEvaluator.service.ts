@@ -39,35 +39,19 @@ function safeParseAIResponse(text: string): EvaluationResult {
 export class AiEvaluatorService {
   async evaluate(answer: string): Promise<EvaluationResult> {
     try {
-      const prompt = `
-You are an expert system design evaluator.
+       const aiText = await evaluateArchitectureWithGemini(
+        "System Design Problem",
+        "Evaluate architecture submission",
+        answer
+      );
 
-Evaluate the following answer.
+     const parsed = safeParseAIResponse(aiText);
 
-Return ONLY valid JSON. Do NOT include markdown, explanations, or extra text.
+     return parsed;
+         } catch (error) {
+           console.error("AI evaluation failed:", error);
 
-Format:
-{
-  "score": number (0-100),
-  "feedback": string
-}
-
-Answer:
-${answer}
-`;
-      const aiText = await evaluateArchitectureWithGemini(
-       "System Design Problem",
-       "Evaluate architecture submission",
-       answer
-    );
-
-    const parsed = safeParseAIResponse(aiText);
-
-return parsed;
-    } catch (error) {
-      console.error("AI evaluation failed:", error);
-
-      return {
+       return {
         score: 50,
         feedback: "Architecture analyzed using fallback evaluation engine. Core architecture checks, pattern detection, and linting results are shown below.",
         strengths: [],

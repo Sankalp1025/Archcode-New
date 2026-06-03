@@ -25,11 +25,7 @@ export const streamSubmissionUpdates = (
 
   sseManager.addClient(submissionId, res);
 
-  console.log(`Client connected for submission ${submissionId}`);
-
   req.on("close", () => {
     sseManager.removeClient(submissionId, res);
-
-    console.log(`Client disconnected for submission ${submissionId}`);
   });
 };

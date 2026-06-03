@@ -1,12 +1,9 @@
 import dotenv from "dotenv";
 dotenv.config();
-console.log("DB:", process.env.DATABASE_URL);
 
 import submissionStreamRoutes from "./realtime/submissionStream.routes";
 
 import problemRoutes from "./routes/problem.routes";
-
-import airoutes from "./routes/ai.routes";
 
 import authRoutes from "./modules/auth/auth.routes";
 
@@ -43,8 +40,6 @@ app.use(express.json());
 app.use("/api/submissions", submissionRoutes);
 
 app.use("/api/problems", problemRoutes);
-
-app.use("/api/ai", airoutes);
 
 app.use("/api/auth", authRoutes);
 

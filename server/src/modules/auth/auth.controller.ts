@@ -6,10 +6,7 @@ import jwt from "jsonwebtoken";
 
 import { prisma } from "../../config/db";
 
-import {
-  generateAccessToken,
-  generateRefreshToken,
-} from "../../utils/jwt";
+import { generateAccessToken, generateRefreshToken } from "../../utils/jwt";
 
 export const signup = async (
   req:Request,
@@ -87,16 +84,6 @@ export const refresh = async (
         },
       });
 
-    console.log(
-      "DB token:",
-      user?.refreshToken
-    );
-
-    console.log(
-      "Sent token:",
-      refreshToken
-    );
-
     if (
       !user ||
       user.refreshToken !== refreshToken
@@ -117,7 +104,7 @@ export const refresh = async (
 
       data: {
         refreshToken:
-         newRefreshToken,
+        newRefreshToken,
       },
     });
 

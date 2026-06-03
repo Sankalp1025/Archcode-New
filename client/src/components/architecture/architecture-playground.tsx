@@ -1,7 +1,5 @@
 "use client";
 
-// Ignore TypeScript missing declaration for CSS side-effect import
-// @ts-ignore
 import "@xyflow/react/dist/style.css";
 import { useCallback, useEffect, useState, useRef } from "react";
 import { toPng } from "html-to-image";

@@ -24,7 +24,6 @@
     "express": "^5.2.1",
     "ioredis": "^5.10.1",
     "jsonwebtoken": "^9.0.3",
-    "openai": "^6.32.0",
     "pg": "^8.20.0",
     "standard-as-callback": "^2.1.0"
   },

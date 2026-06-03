@@ -28,8 +28,8 @@ export default function LoginForm() {
   };
 
   const handleLogin = async (
-    e: React.FormEvent
-  ) => {
+    e: React.SyntheticEvent<HTMLFormElement>) => {
+      
     e.preventDefault();
 
     try {

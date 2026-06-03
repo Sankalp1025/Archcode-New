@@ -1,6 +1,15 @@
 import { useEffect, useState } from "react";
 
+ type LintIssue = {
+    ruleId: string;
+    title: string;
+    description: string;
+    recommendation: string;
+    severity: string;
+    };
+
 export const useSubmissionStream = (
+
   submissionId: string
 ) => {
 
@@ -11,7 +20,7 @@ export const useSubmissionStream = (
   const [weaknesses, setWeaknesses] = useState<string[]>([]);
   const [recommendations, setRecommendations] = useState<string[]>([]);
   const [detectedPatterns, setDetectedPatterns] = useState<string[]>([]);
-  const [lintIssues, setLintIssues] = useState<any[]>([]);
+  const [lintIssues, setLintIssues] = useState<LintIssue[]>([]);
 
   useEffect(() => {
     if (!submissionId) return;
@@ -55,8 +64,6 @@ export const useSubmissionStream = (
    if (typeof data.feedback === "string") {
      setFeedback(data.feedback);
     } 
-
-  console.log("Realtime update:", data);
 };
 
     eventSource.onerror = () => {

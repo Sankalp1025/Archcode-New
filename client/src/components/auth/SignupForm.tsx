@@ -26,8 +26,7 @@ export default function SignupForm() {
   };
 
   const handleSignup = async (
-    e: React.FormEvent
-  ) => {
+    e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     try {
