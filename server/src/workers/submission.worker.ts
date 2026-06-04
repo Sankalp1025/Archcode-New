@@ -1,5 +1,6 @@
 import dotenv from "dotenv";
 dotenv.config();
+import express from "express";
 import { Worker, Job } from "bullmq";
 import { redisConnection } from "../config/redis";
 import { prisma } from "../config/db";
@@ -160,3 +161,15 @@ submissionWorker.on(
     }
   }
 );
+
+const app = express();
+
+app.get("/", (_, res) => {
+  res.send("ArchCode Worker Running");
+});
+
+const PORT = Number(process.env.PORT) || 10000;
+
+app.listen(PORT, () => {
+  console.log(`Worker health server running on port ${PORT}`);
+});
