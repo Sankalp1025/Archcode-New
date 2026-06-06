@@ -13,7 +13,7 @@ export const streamSubmissionUpdates = (
 
   res.setHeader(
     "Access-Control-Allow-Origin",
-    "http://localhost:3000"
+    "https://archcode-api.onrender.com"
 );
 
   res.setHeader(

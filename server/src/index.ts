@@ -21,7 +21,7 @@ app.use("/api", submissionStreamRoutes);
 
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: "https://archcode-api.onrender.com",
     credentials: true,
   })
 );
@@ -40,7 +40,7 @@ app.use("/api/problems", problemRoutes);
 
 app.use("/api/auth", authRoutes);
 
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);

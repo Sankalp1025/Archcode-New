@@ -237,7 +237,7 @@ useEffect(() => {
        setAnalysis(localAnalysis);
 
       const response = await fetch(
-        "http://localhost:5000/api/submissions/submit",
+        "https://archcode-api.onrender.com/evaluate",
         {
           method: "POST",
           headers: {
