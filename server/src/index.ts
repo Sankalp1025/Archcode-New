@@ -25,13 +25,6 @@ app.use(cors({
 
 app.use("/api", submissionStreamRoutes);
 
-app.use(
-  cors({
-    origin: "https://archcode-api.onrender.com",
-    credentials: true,
-  })
-);
-
 app.use(express.json());
 
 app.get("/", (_, res) => {
