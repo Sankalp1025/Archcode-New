@@ -1,8 +1,12 @@
 import express from "express";
-import { createSubmission } from "./submission.controller";
+import {
+  createSubmission,
+  getSubmissionById,
+} from "./submission.controller";
 
 const router = express.Router();
 
-router.post("/submit", createSubmission);
+router.post("/", createSubmission);
+router.get("/:id", getSubmissionById);
 
 export default router;
