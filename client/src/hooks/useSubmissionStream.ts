@@ -26,7 +26,7 @@ export const useSubmissionStream = (
     if (!submissionId) return;
 
     const eventSource = new EventSource(
-      `https://archcode-api.onrender.com/${submissionId}/stream`
+      `https://archcode-api.onrender.com/api/submissions/${submissionId}/stream`
     );
 
   eventSource.onmessage = (event) => {
