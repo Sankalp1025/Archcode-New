@@ -18,6 +18,7 @@ const evaluationService = new EvaluationService();
 export const submissionWorker = new Worker(
   "submission-queue",
   async (job: Job) => {
+    console.log("Worker picked job:", job.id);               // For debugging
     const { submissionId } = job.data;
     
     // REALTIME: QUEUED

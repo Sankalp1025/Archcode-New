@@ -1,36 +1,30 @@
 import { Queue } from "bullmq";
-import IORedis from "ioredis";
-
-const connection = new IORedis(
-  process.env.REDIS_URL!,
-  {
-    maxRetriesPerRequest: null,
-  }
-);
+import { redisConnection } from "../config/redis";
 
 export const submissionQueue = new Queue("submission-queue", {
-  connection,
+  connection: redisConnection,
 });
 
 export const addSubmissionJob = async (
   submissionId: string
 ) => {
-  await submissionQueue.add(
+  console.log("Adding job:", submissionId);
+
+  const job = await submissionQueue.add(
     "evaluate-submission",
     {
       submissionId,
     },
-
     {
       attempts: 5,
-
       backoff: {
         type: "exponential",
         delay: 1000,
       },
-      
       removeOnComplete: true,
       removeOnFail: false,
     }
   );
+
+  console.log("Added job:", job.id);
 };
