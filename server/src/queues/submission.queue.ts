@@ -8,8 +8,6 @@ export const submissionQueue = new Queue("submission-queue", {
 export const addSubmissionJob = async (
   submissionId: string
 ) => {
-  console.log("Adding job:", submissionId);
-
   const job = await submissionQueue.add(
     "evaluate-submission",
     {
@@ -25,6 +23,4 @@ export const addSubmissionJob = async (
       removeOnFail: false,
     }
   );
-
-  console.log("Added job:", job.id);
 };

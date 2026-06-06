@@ -15,6 +15,4 @@ export const initializeRedisSubscriber = async () => {
       event.extraData
     );
   });
-
-  console.log("Redis subscriber initialized");
 };

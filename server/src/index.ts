@@ -20,7 +20,7 @@ import { initializeRedisSubscriber } from "./realtime/redisSubscriber";
 const app = express();
 
 app.use(cors({
-  origin: ['https://archcode-five.vercel.app',
+  origin: ['https://archcode-ai.vercel.app',
     'http://localhost:3000'],
   credentials: true,
 }));
@@ -32,8 +32,6 @@ app.use(express.json());
 app.get("/", (_, res) => {
   res.send("Backend running");
 });
-
-app.use(express.json());
 
 app.use("/api/submissions", submissionRoutes);
 

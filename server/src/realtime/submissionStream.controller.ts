@@ -13,7 +13,7 @@ export const streamSubmissionUpdates = (
 
   res.setHeader(
     "Access-Control-Allow-Origin",
-    "https://archcode-five.vercel.app"
+    "https://archcode-ai.vercel.app"
 );
 
   res.setHeader(

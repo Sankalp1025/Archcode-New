@@ -7,14 +7,7 @@ import { prisma } from "../config/db";
 import { EvaluationService } from "../modules/evaluation/evaluation.service";
 import { SubmissionStatus } from "@prisma/client";
 import { dlqQueue } from "../queues/dlq.queue";
-
-/*import {
-  emitSubmissionUpdate,
-  SubmissionStatus as RealtimeSubmissionStatus,
-} from "../realtime/submissionEvents";*/
-
 import { SubmissionStatus as RealtimeSubmissionStatus } from "../realtime/submissionEvents";
-
 import { publishSubmissionUpdate } from "../realtime/publishSubmissionUpdate";
 
 const evaluationService = new EvaluationService();
