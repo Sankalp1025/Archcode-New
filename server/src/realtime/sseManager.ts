@@ -26,14 +26,20 @@ class SSEManager {
   }
 
   sendEvent(submissionId: string, data: unknown) {
-    const clients = this.clients.get(submissionId);
+  const clients = this.clients.get(submissionId);
 
-    if (!clients) return;
+  console.log(                                 // For debugging
+    "SSE clients:",
+    submissionId,
+    clients?.size ?? 0
+  );
 
-    for (const client of clients) {
-     client.write(`data: ${JSON.stringify(data)}\n\n`);
-    }
+  if (!clients) return;
+
+  for (const client of clients) {
+    client.write(`data: ${JSON.stringify(data)}\n\n`);
   }
+}
 }
 
 export const sseManager = new SSEManager();
