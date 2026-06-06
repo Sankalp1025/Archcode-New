@@ -8,27 +8,29 @@ import { EvaluationService } from "../modules/evaluation/evaluation.service";
 import { SubmissionStatus } from "@prisma/client";
 import { dlqQueue } from "../queues/dlq.queue";
 
-import {
+/*import {
   emitSubmissionUpdate,
   SubmissionStatus as RealtimeSubmissionStatus,
-} from "../realtime/submissionEvents";
+} from "../realtime/submissionEvents";*/
+
+import { SubmissionStatus as RealtimeSubmissionStatus } from "../realtime/submissionEvents";
+
+import { publishSubmissionUpdate } from "../realtime/publishSubmissionUpdate";
 
 const evaluationService = new EvaluationService();
 
 export const submissionWorker = new Worker(
   "submission-queue",
   async (job: Job) => {
-    console.log("Worker picked job:", job.id);               // For debugging
     const { submissionId } = job.data;
     
     // REALTIME: QUEUED
-    emitSubmissionUpdate(
+    await publishSubmissionUpdate(
       submissionId,
       RealtimeSubmissionStatus.QUEUED
     );
 
     try {
-      console.log("STEP 1: Job picked:");                    // For debugging
       const submission = await prisma.submission.findUnique({
         where: { id: submissionId },
       });
@@ -48,7 +50,6 @@ export const submissionWorker = new Worker(
       }
 
       // UPDATE DB -> PROCESSING
-      console.log("STEP 2: Submission loaded:");            // For debugging
       await prisma.submission.update({
         where: { id: submissionId },
         data: {
@@ -56,23 +57,21 @@ export const submissionWorker = new Worker(
         },
       });
 
-      emitSubmissionUpdate(
+      await publishSubmissionUpdate(
         submissionId,
         RealtimeSubmissionStatus.PROCESSING
       );
         
-      emitSubmissionUpdate(
+      await publishSubmissionUpdate(
         submissionId,
         RealtimeSubmissionStatus.AI_EVALUATING
       );
      
-      console.log("STEP 3: Status updated:");            // For debugging
       const result = await evaluationService.evaluate({
         answer: submission.code,
       });
-       console.log("STEP 4: Evaluation completed:");      // For debugging
 
-      emitSubmissionUpdate(
+      await publishSubmissionUpdate(
         submissionId,
         RealtimeSubmissionStatus.ANALYZING
       );
@@ -91,10 +90,8 @@ export const submissionWorker = new Worker(
         },
       });  
 
-      console.log("STEP 5: Submission completed:");      // For debugging
-
       // REALTIME: COMPLETED
-      emitSubmissionUpdate(
+      await publishSubmissionUpdate(
         submissionId,
         RealtimeSubmissionStatus.COMPLETED,
         {
@@ -128,7 +125,7 @@ export const submissionWorker = new Worker(
         });
 
         // REALTIME: FAILED
-        emitSubmissionUpdate(
+        await publishSubmissionUpdate(
           submissionId,
           RealtimeSubmissionStatus.FAILED,
           {

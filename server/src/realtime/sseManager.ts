@@ -28,12 +28,6 @@ class SSEManager {
   sendEvent(submissionId: string, data: unknown) {
   const clients = this.clients.get(submissionId);
 
-  console.log(                                 // For debugging
-    "SSE clients:",
-    submissionId,
-    clients?.size ?? 0
-  );
-
   if (!clients) return;
 
   for (const client of clients) {
