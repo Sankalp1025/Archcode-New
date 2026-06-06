@@ -63,7 +63,7 @@ export class PatternDetectionService {
 
     if (microserviceCount >= 2) {
       detectedPatterns.push("Microservices Pattern");
-    }
+    }   
 
     return detectedPatterns;
   }

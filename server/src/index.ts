@@ -9,14 +9,11 @@ import authRoutes from "./modules/auth/auth.routes";
 
 import submissionRoutes from "./modules/submission/submission.routes";
 
-import "./workers/submission.worker";
-
 import "./workers/dlq.worker";
 
 import cors from "cors";
 
 import express from "express";
-
 
 const app = express();
 
